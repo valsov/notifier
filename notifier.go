@@ -1,6 +1,7 @@
 package notifier
 
 import (
+	"errors"
 	"fmt"
 	"sync"
 )
@@ -34,7 +35,11 @@ func init() {
 }
 
 // Register a function to execute when an event of the type T is published
-func RegisterHandler[T any](fn func(T)) {
+func RegisterHandler[T any](fn func(T)) error {
+	if fn == nil {
+		return errors.New("fn cannot be nil")
+	}
+
 	key := fmt.Sprintf("%T", *new(T)) // Event key is type name
 	mutex.Lock()
 	defer mutex.Unlock()
@@ -45,16 +50,22 @@ func RegisterHandler[T any](fn func(T)) {
 		fn(ctx.Parameter.(T))
 	})
 	subscriptions[key] = subscription
+	return nil
 }
 
 // Register a middleware to be run before any notification handler is called
 //
 // Middlewares registration order matters
-func RegisterMiddleware(fn ExecutionContextFunc) {
+func RegisterMiddleware(fn ExecutionContextFunc) error {
+	if fn == nil {
+		return errors.New("fn cannot be nil")
+	}
+
 	mutex.Lock()
 	defer mutex.Unlock()
 
 	middlewares = append(middlewares, fn)
+	return nil
 }
 
 // Publish a notification to be handled by all matching registered handlers
