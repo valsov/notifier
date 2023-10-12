@@ -8,9 +8,9 @@ import (
 // Function handling an ExecutionContext, allowing subsequent handlers execution with ExecutionContext.Next() method
 type ExecutionContextFunc func(*ExecutionContext)
 
-// Context of a notification handling execution
+// Context of a notification handling execution. Allows access to the parameter of the notification
 //
-// Allows access to the parameter of the notification
+// WARNING: if it is a pointer, changes to the parameter in this context may affect other running handlers
 type ExecutionContext struct {
 	Parameter      any
 	handlers       []ExecutionContextFunc
