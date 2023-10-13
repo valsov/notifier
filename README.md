@@ -62,7 +62,7 @@ func main() {
     })
 }
 
-func (parameter int) {
+func function(parameter int) {
     // [...]
 }
 
