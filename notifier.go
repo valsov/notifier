@@ -20,6 +20,11 @@ type ExecutionContext struct {
 
 // Call the next handler (may be a middleware) in the execution chain
 func (e *ExecutionContext) Next() {
+	if len(e.handlers) <= e.executionIndex+1 {
+		// Invalid index, shoudn't be reached
+		return
+	}
+
 	e.executionIndex++
 	e.handlers[e.executionIndex](e)
 }

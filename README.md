@@ -8,7 +8,7 @@ Implementation of a Notifier library in Go, it supports middlewares and runs han
 package main
 
 import (
-	"fmt"
+    "fmt"
 
     "github.com/valsov/notifier"
 )
